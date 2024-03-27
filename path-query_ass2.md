@@ -13,21 +13,23 @@ price: Optional[int] = None
 email: EmailStr
 
 users = {
-1: {
-"name": "Jerry",
-"age": 34,
-"id": 1
-},
-2: {
-"name": "Lampard",
-"age": 45,
-"id": 2
-},
-3: {
-"name": "Mary",
-"age": 14,
-"id": 3
-}
+      1: {
+           "name": "Jerry",
+           "age": 34,
+           "id": 1
+      },
+
+      2: {
+           "name": "Lampard",
+           "age": 45,
+           "id": 2
+      },
+
+      3: {
+           "name": "Mary",
+           "age": 14,
+           "id": 3
+      }
 }
 ```
 
