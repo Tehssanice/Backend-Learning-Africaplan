@@ -48,14 +48,14 @@ users = {
 ```python
 @router.get("/users/{user_id}")
 async def check_users(user_id: int, start_date: datetime = Query(None, title="Start date", gt=0)):
-try:
-if user_id > 0:
-if user_id in users:
-return users[user_id]
-else:
-raise HTTPException(status_code=404, detail="User not found")
-except HTTPException as e:
-return f"404 Error: {e.detail}"
+      try:
+            if user_id > 0:
+                  if user_id in users:
+                        return users[user_id]
+            else:
+                  raise HTTPException(status_code=404, detail="User not found")
+      except HTTPException as e:
+            return f"404 Error: {e.detail}"
 ```
 
 # Code Writing: Query Parameters
