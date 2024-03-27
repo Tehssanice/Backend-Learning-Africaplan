@@ -47,15 +47,15 @@ users = {
 
 ```python
 @router.get("/users/{user_id}")
-async def check_users(user_id: int, start_date: datetime = Query(None, title="Start date", gt=0)):
-      try:
-            if user_id > 0:
-                  if user_id in users:
-                        return users[user_id]
+async def check_users(user_id: int, start_date: datetime = Query(None, title="Start date")):
+    try:
+        if user_id > 0:
+            if user_id in users:
+                return users[user_id]
             else:
-                  raise HTTPException(status_code=404, detail="User not found")
-      except HTTPException as e:
-            return f"404 Error: {e.detail}"
+                raise HTTPException(status_code=404, detail="User not found")
+    except HTTPException as e:
+        return f"404 Error: {e.detail}"
 ```
 
 # Code Writing: Query Parameters
@@ -66,15 +66,15 @@ async def check_users(user_id: int, start_date: datetime = Query(None, title="St
 ```python
 @router.get("/products/")
 async def filter_list(category: str = "all", price_range: str = "0-100", q: str | None = None):
-products = {
-"product1": {"category": "jewelry", "price_range": 100},
-"product2": {"category": "book", "price_range": 50},
-"product3": {"category": "electronics", "price_range": 150}
-}
+  products = {
+        "product1": {"category": "jewelry", "price_range": 100},
+        "product2": {"category": "book", "price_range": 50},
+        "product3": {"category": "electronics", "price_range": 150}
+    }
 
     filtered_products = []
 
-    if price_range:
+  if price_range:
         range_ = price_range.split("-")
         proposed_range = range(int(range_[0]), int(range_[-1]) + 1)
 
@@ -126,6 +126,7 @@ async def get_restaurant(cuisine_type: str = "all", min_rating: float = 3.0):
 
     filtered_res = []
 
+
     for key, value in restaurant.items():
         if cuisine_type == "all" or restaurant[key]["cuisine_type"] == cuisine_type:
             if not restaurant[key]["rating"] < min_rating:
@@ -134,9 +135,9 @@ async def get_restaurant(cuisine_type: str = "all", min_rating: float = 3.0):
     return filtered_res
 
 rooms = {
-1: {"name": "Room A", "category": "electronics", "price": 130},
-2: {"name": "Room B", "category": "clothing", "price": 70},
-3: {"name": "Room C", "category": "electronics", "price": 300},
+    1: {"name": "Room A", "category": "electronics", "price": 130},
+    2: {"name": "Room B", "category": "clothing", "price": 70},
+    3: {"name": "Room C", "category": "electronics", "price": 300},
 }
 ```
 
@@ -148,12 +149,12 @@ rooms = {
 ```python
 @router.get("/rooms/{room_id}")
 async def get_room(room_id: int = Path(..., title="Product ID")):
-return rooms.get(room_id)
+    return rooms.get(room_id)
 
 @router.get("/rooms/")
 async def filter_rooms(category: str = Query(None, title="Category")):
-filtered_rooms = [room for room in rooms.values(
-)
-if room["category"] == category]if category else list(rooms.values())
-return filtered_rooms
+    filtered_rooms = [room for room in rooms.values(
+    )
+        if room["category"] == category]if category else list(rooms.values())
+    return filtered_rooms
 ```
