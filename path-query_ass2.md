@@ -1,3 +1,4 @@
+```python
 from fastapi import APIRouter, HTTPException, Query, Path
 from pydantic import BaseModel, EmailStr
 from typing import Optional, Annotated
@@ -5,68 +6,69 @@ from datetime import datetime
 
 router = APIRouter()
 
-
 class Cart(BaseModel):
-    name: str
-    category: str
-    price: Optional[int] = None
-    email: EmailStr
-
+name: str
+category: str
+price: Optional[int] = None
+email: EmailStr
 
 users = {
-    1: {
-        "name": "Jerry",
-        "age": 34,
-        "id": 1
-    },
-    2: {
-        "name": "Lampard",
-        "age": 45,
-        "id": 2
-    },
-    3: {
-        "name": "Mary",
-        "age": 14,
-        "id": 3
-    }
+1: {
+"name": "Jerry",
+"age": 34,
+"id": 1
+},
+2: {
+"name": "Lampard",
+"age": 45,
+"id": 2
+},
+3: {
+"name": "Mary",
+"age": 14,
+"id": 3
 }
+}
+```
 
-** Code Writing: Path Parameters **
-● Write a FastAPI route that accepts  a path parameter for user identification (user_id) and returns the user's profile information.
-● Implement error handling for the case when the user_id path parameter is missing. 
-  
-** AND **
-  
-** Data Validation: **
+# Code Writing: Path Parameters
+
+● Write a FastAPI route that accepts a path parameter for user identification (user_id) and returns the user's profile information.
+● Implement error handling for the case when the user_id path parameter is missing.
+
+## AND
+
+# Data Validation:
+
 ● Modify an existing FastAPI route that accepts a path parameter for user_id to ensure that user_id is an integer and greater than zero.
-● Add validation to a query parameter start_date to ensure it is a valid date format.  
+● Add validation to a query parameter start_date to ensure it is a valid date format.
 
-SOLUTION:
+```python
 @router.get("/users/{user_id}")
-async def check_users(user_id: int, start_date: datetime = Query(None, title="Start date")):
-    try:
-        if user_id > 0:
-            if user_id in users:
-                return users[user_id]
-            else:
-                raise HTTPException(status_code=404, detail="User not found")
-    except HTTPException as e:
-        return f"404 Error: {e.detail}"
+async def check_users(user_id: int, start_date: datetime = Query(None, title="Start date", gt=0)):
+try:
+if user_id > 0:
+if user_id in users:
+return users[user_id]
+else:
+raise HTTPException(status_code=404, detail="User not found")
+except HTTPException as e:
+return f"404 Error: {e.detail}"
+```
 
-  
+# Code Writing: Query Parameters
 
-** Code Writing: Query Parameters **
 ● Create a FastAPI route that accepts query parameters for filtering a list of products by category and price range.
-● Implement default values for the query parameters (category defaulting to 'all' and price_range defaulting to a specific range). 
-  
-SOLUTION:
+● Implement default values for the query parameters (category defaulting to 'all' and price_range defaulting to a specific range).
+
+```python
 @router.get("/products/")
 async def filter_list(category: str = "all", price_range: str = "0-100", q: str | None = None):
-    products = {
-        "product1": {"category": "jewelry", "price_range": 100},
-        "product2": {"category": "book", "price_range": 50},
-        "product3": {"category": "electronics", "price_range": 150}
-    }
+products = {
+"product1": {"category": "jewelry", "price_range": 100},
+"product2": {"category": "book", "price_range": 50},
+"product3": {"category": "electronics", "price_range": 150}
+}
 
     filtered_products = []
 
@@ -80,16 +82,14 @@ async def filter_list(category: str = "all", price_range: str = "0-100", q: str 
                 filtered_products.append(products[key])
 
     return filtered_products
+```
 
+## Combining Path and Query Parameters:
 
-
-
-
-** Combining Path and Query Parameters: **
 ● Write a FastAPI route that accepts a path parameter for city (city_id) and query parameters for filtering restaurants by cuisine type (cuisine) and rating (min_rating).
-● Ensure that the city ID is a path parameter while cuisine type and minimum rating are query parameters.         
+● Ensure that the city ID is a path parameter while cuisine type and minimum rating are query parameters.
 
-SOLUTION:
+```python
 @router.get("/city/{city_id}")
 async def get_restaurant(cuisine_type: str = "all", min_rating: float = 3.0):
 
@@ -132,25 +132,26 @@ async def get_restaurant(cuisine_type: str = "all", min_rating: float = 3.0):
     return filtered_res
 
 rooms = {
-    1: {"name": "Room A", "category": "electronics", "price": 130},
-    2: {"name": "Room B", "category": "clothing", "price": 70},
-    3: {"name": "Room C", "category": "electronics", "price": 300},
+1: {"name": "Room A", "category": "electronics", "price": 130},
+2: {"name": "Room B", "category": "clothing", "price": 70},
+3: {"name": "Room C", "category": "electronics", "price": 300},
 }
+```
 
+# Usage and Benefits:
 
-** Usage and Benefits: **
 ● Analyze a given FastAPI application and identify instances where using path parameters would be more appropriate than query parameters, and vice versa.
 ● Discuss the benefits of using path and query parameters in the provided FastAPI application and how it enhances API design.
 
-SOLUTION:
+```python
 @router.get("/rooms/{room_id}")
 async def get_room(room_id: int = Path(..., title="Product ID")):
-    return rooms.get(room_id)
-
+return rooms.get(room_id)
 
 @router.get("/rooms/")
 async def filter_rooms(category: str = Query(None, title="Category")):
-    filtered_rooms = [room for room in rooms.values(
-    )
-        if room["category"] == category]if category else list(rooms.values())
-    return filtered_rooms
+filtered_rooms = [room for room in rooms.values(
+)
+if room["category"] == category]if category else list(rooms.values())
+return filtered_rooms
+```
