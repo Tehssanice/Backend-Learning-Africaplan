@@ -41,6 +41,7 @@ users = {
 ● Modify an existing FastAPI route that accepts a path parameter for user_id to ensure that user_id is an integer and greater than zero.
 ● Add validation to a query parameter start_date to ensure it is a valid date format.  
 
+SOLUTION:
 @router.get("/users/{user_id}")
 async def check_users(user_id: int, start_date: datetime = Query(None, title="Start date")):
     try:
@@ -58,7 +59,7 @@ async def check_users(user_id: int, start_date: datetime = Query(None, title="St
 ● Create a FastAPI route that accepts query parameters for filtering a list of products by category and price range.
 ● Implement default values for the query parameters (category defaulting to 'all' and price_range defaulting to a specific range). 
   
-
+SOLUTION:
 @router.get("/products/")
 async def filter_list(category: str = "all", price_range: str = "0-100", q: str | None = None):
     products = {
@@ -88,6 +89,7 @@ async def filter_list(category: str = "all", price_range: str = "0-100", q: str 
 ● Write a FastAPI route that accepts a path parameter for city (city_id) and query parameters for filtering restaurants by cuisine type (cuisine) and rating (min_rating).
 ● Ensure that the city ID is a path parameter while cuisine type and minimum rating are query parameters.         
 
+SOLUTION:
 @router.get("/city/{city_id}")
 async def get_restaurant(cuisine_type: str = "all", min_rating: float = 3.0):
 
@@ -134,3 +136,21 @@ rooms = {
     2: {"name": "Room B", "category": "clothing", "price": 70},
     3: {"name": "Room C", "category": "electronics", "price": 300},
 }
+
+
+** Usage and Benefits: **
+● Analyze a given FastAPI application and identify instances where using path parameters would be more appropriate than query parameters, and vice versa.
+● Discuss the benefits of using path and query parameters in the provided FastAPI application and how it enhances API design.
+
+SOLUTION:
+@router.get("/rooms/{room_id}")
+async def get_room(room_id: int = Path(..., title="Product ID")):
+    return rooms.get(room_id)
+
+
+@router.get("/rooms/")
+async def filter_rooms(category: str = Query(None, title="Category")):
+    filtered_rooms = [room for room in rooms.values(
+    )
+        if room["category"] == category]if category else list(rooms.values())
+    return filtered_rooms
