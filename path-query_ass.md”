@@ -1,8 +1,8 @@
 #Path-&-Query-Parameters
 
-##Path Parameters:**
+##Path Parameters:
 
-##What are path parameters in FastAPI?**
+##What are path parameters in FastAPI?
 
 Path parameters are bits of information included in the URL address. They let you grab changing values from the URL and use them in your code to adjust how your app responds to requests.
 
